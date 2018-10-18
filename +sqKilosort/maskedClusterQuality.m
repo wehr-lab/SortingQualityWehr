@@ -57,7 +57,7 @@ if exist(spikeClustersPath,'file')
         
         
         
-        newFetInds(c,:) = theseChans(1,:);
+        newFetInds(c,:) = theseChans;
         
         %subPCFetInd = pc_features(theseSpikes,:,:);
         

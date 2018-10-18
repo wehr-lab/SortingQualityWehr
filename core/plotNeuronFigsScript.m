@@ -59,23 +59,23 @@ figDir = fullfile(sprintf('%s',pwd),'\figs');
 theseISI = isiV(cgs==2);
 theseCR = cR(cgs==2);
 theseID = uQ(cgs==2);
-
+maxChans=[];
 for q = 1:length(inclCID)
     clusterID = inclCID(q);
-
     stats.medWF = squeeze(medWFs(inclCID==clusterID,:,:))';
     stats.isiContamination = theseISI(inclCID==clusterID);
     stats.isoDistance = theseID(inclCID==clusterID);
     stats.mahalContamination = theseCR(inclCID==clusterID);
-%     stats.isiContamination = 0;
-%     stats.isoDistance = 0;
-    figHand = neuronFig(clusterID, st, clu, sparsePCfeat, spikeAmps, stats, params);
+    [figHand, maxChan, snr, snr1] = neuronFig(clusterID, st, clu, sparsePCfeat, spikeAmps, stats, params);
     set(figHand, 'Position', [-1890         -59        1810        1031]);
     savefig(figHand, fullfile(figDir, sprintf('/cluster%d', clusterID)))
     close(figHand); clear figHand
-    
+    maxChans(q)=maxChan(1);
+    SNR(q)=snr;
+    SNR1(q)=snr1;
 end
-
+save('maxChans.mat', 'maxChans') %save max spike channels
+save('SNR.mat', 'SNR', 'SNR1') %save signal to noise calculations
 plotAllMeasures(cgs, uQ, cR,isiV) % plot all clusters and their measures of quality
 
 [spikeTimes, spikeAmps, spikeDepths, spikeSites] = ksDriftmap(pwd); %plot spikes across time to look at drift

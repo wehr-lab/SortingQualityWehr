@@ -1,6 +1,6 @@
 
 
-function f = neuronFig(clusterID, spikeTimes, clu, sparsePCfeat, spikeAmps, stats, params)
+function [f, maxChan, snr, snr1] = neuronFig(clusterID, spikeTimes, clu, sparsePCfeat, spikeAmps, stats, params)
 % Makes a plot of relevant stats/figures for a neuron
 %
 %
@@ -74,8 +74,9 @@ chansToPlot = chanDistances<params.plotDistance;
 wfAmp = max(chanAmps);
 
 bckgMaxChan = double(squeeze(bckgWF(:,maxChan,:)));
-% snr = wfAmp./std(bckgMaxChan(:));
+snr1 = wfAmp./std(bckgMaxChan(:));
 snr = wfAmp./median(abs(bckgMaxChan(:))/0.6745); % RQQ method
+
 
 %% compute PC stuff
 
