@@ -1,5 +1,3 @@
-
-
 function [cids, cgs, uQ, cR, isiV, noise_rate] = computeAllMeasures(resultsDirectory)
 
 clusterPath = fullfile(resultsDirectory, 'cluster_groups.csv');

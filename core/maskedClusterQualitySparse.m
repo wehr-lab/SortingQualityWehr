@@ -1,5 +1,3 @@
-
-
 function [clusterIDs, unitQuality, contaminationRate, noise_rate] = maskedClusterQualitySparse(clu, fet, fetInds, fetNchans)
 % - clu is 1 x nSpikes
 % - fet is nSpikes x nPCsPerChan x nInclChans
@@ -20,8 +18,13 @@ assert(fetNchans <= size(fet, 3) && size(fet, 1) == N , 'bad input(s)')
 clusterIDs = unique(clu);
 unitQuality = zeros(size(clusterIDs));
 contaminationRate = zeros(size(clusterIDs));
+noise_rate = zeros(size(clusterIDs));
 
-fprintf('%12s\tQuality\tContamination\tPercentWithinISIspikes\tGoodness\n', 'ID'); % comment to suppress printing out the intermediate results
+fprintf('%12s\tQuality\tContam\tPrcnt1.5msViol\tGoodness\tNspikes\n', 'ID'); % comment to suppress printing out the intermediate results
+
+spike_clusters = readNPY('spike_clusters.npy');
+spike_times = double(readNPY('spike_times.npy'));
+
 for c = 1:numel(clusterIDs)
     
     theseSp = clu==clusterIDs(c);
@@ -83,11 +86,7 @@ for c = 1:numel(clusterIDs)
             end
         end
     end
-    
-                
-                
-                
-    
+                   
     fetOtherClusters = reshape(fetOtherClusters, size(fetOtherClusters,1), []);
     
     [uQ, cR] = maskedClusterQualityCore(fetThisCluster, fetOtherClusters);
@@ -95,13 +94,11 @@ for c = 1:numel(clusterIDs)
     unitQuality(c) = uQ;
     contaminationRate(c) = cR;
     
-    %adding percent within 2 ms spikes
-    spike_clusters = readNPY('spike_clusters.npy');
-    spike_times = readNPY('spike_times.npy');
-    
+    % percent within 1.5 ms spikes (hard coded sampling rate of 30kHz)
     st=spike_times(spike_clusters==clusterIDs(c)-1);
-    sp_isi=find(diff(st)<.002);
+    sp_isi=find(diff(st/30000)<.0015);
     sp = loadKSdir(pwd);
+    
     index = find(sp.cids==clusterIDs(c)-1);
     if isempty(index)
         gnum = 0;
@@ -119,7 +116,7 @@ for c = 1:numel(clusterIDs)
     else
         goodness = 'missing';
     end
-    if isempty(sp_isi);
+    if isempty(sp_isi)
         num_sp_isi=0;
     else
         num_sp_isi=length(sp_isi);
@@ -127,8 +124,7 @@ for c = 1:numel(clusterIDs)
     total_sp=length(st);
     noise_rate(c)=(num_sp_isi/total_sp)*100;
     
-    
-    fprintf('cluster %3d: \t%6.1f\t%6.2f\t%6.1f\t%s\n', clusterIDs(c), unitQuality(c), contaminationRate(c),noise_rate(c), goodness); % comment to suppress printing out the intermediate results
+    fprintf('cluster %3d: \t%6.1f\t%6.2f\t\t%6.2f\t\t%s\t\t%d\n', clusterIDs(c), unitQuality(c), contaminationRate(c),noise_rate(c), goodness,numel(st)); % comment to suppress printing out the intermediate results
     
     if uQ>1000
         keyboard;

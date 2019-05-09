@@ -52,9 +52,9 @@ if exist(spikeClustersPath,'file')
         [inclTemps, inst] = countUnique(theseTemplates); 
         
         thisTemplate = inclTemps(inst==max(inst),1);
-        
+        % inserted line below, Kip 5/3/19
+        thisTemplate = thisTemplate(1);
         theseChans = pc_feature_ind(thisTemplate,1:nFet);
-        
         
         
         newFetInds(c,:) = theseChans;
