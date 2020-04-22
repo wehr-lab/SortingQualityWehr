@@ -1,4 +1,4 @@
-
+SNR=[]; SNR1=[];
 ksRoot=pwd;
 
 loadPars.loadPCs = true;
