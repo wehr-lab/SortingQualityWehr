@@ -36,17 +36,18 @@ params.gain = 0.6/512/500 * 1e6;                                            % ra
 params.nPCsToPlot = 50000;
 % params.highlightRegions = [132 1104];
 
-%% extract median WFs (just once)
+%% extract median WFs (just once) %% otherwise load them
 cd(ksRoot)
 inclSP = ismember(clu, sp.cids(sp.cgs == 2));
-medWFs = extractMedianWFs(clu(inclSP), st(inclSP), params.Fs, params.filename, ...
-    params.dataType, params.dataSize, params.chanMap, params.gain);
 
-save(fullfile(ksRoot, 'medWFs.mat'), 'medWFs');
+if ~exist('medWFs.mat', 'file')
+    medWFs = extractMedianWFs(clu(inclSP), st(inclSP), params.Fs, params.filename, ...
+        params.dataType, params.dataSize, params.chanMap, params.gain);
 
-%% otherwise load them
-
+    save(fullfile(ksRoot, 'medWFs.mat'), 'medWFs');
+else
 load(fullfile(ksRoot, 'medWFs.mat'))
+end
 
 %% compute cluster quality stats (just once)
 

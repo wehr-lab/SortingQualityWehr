@@ -2,7 +2,7 @@
 function [clusterIDs, unitQuality, contaminationRate, noise_rate] = maskedClusterQualityKilosort(resultsDirectory)
 
 fprintf(1, 'loading data...\n');
-%% Precompute the locationsn of files to be loaded
+%% Precompute the locations of files to be loaded
 pcFeaturesPath = fullfile(resultsDirectory,'pc_features.npy');
 pcFeaturesIndPath = fullfile(resultsDirectory,'pc_feature_ind.npy');
 spikeClustersPath = fullfile(resultsDirectory,'spike_clusters.npy');

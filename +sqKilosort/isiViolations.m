@@ -2,7 +2,7 @@
 
 function isiV = isiViolations(resultsDirectory)
 
-%% Precompute the locationsn of files to be loaded
+%% Precompute the locations of files to be loaded
 spikeClustersPath = fullfile(resultsDirectory,'spike_clusters.npy');
 spikeTemplatesPath = fullfile(resultsDirectory,'spike_templates.npy');
 spikeTimesPath= fullfile(resultsDirectory,'spike_times.npy');
