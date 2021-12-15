@@ -41,12 +41,10 @@ cd(ksRoot)
 inclSP = ismember(clu, sp.cids(sp.cgs == 2));
 
 if ~exist('medWFs.mat', 'file')
-    medWFs = extractMedianWFs(clu(inclSP), st(inclSP), params.Fs, params.filename, ...
-        params.dataType, params.dataSize, params.chanMap, params.gain);
-
+    medWFs = extractMedianWFs(clu(inclSP), st(inclSP), params.Fs, params.filename, params.dataType, params.dataSize, params.chanMap, params.gain);
     save(fullfile(ksRoot, 'medWFs.mat'), 'medWFs');
 else
-load(fullfile(ksRoot, 'medWFs.mat'))
+    load(fullfile(ksRoot, 'medWFs.mat'))
 end
 
 %% compute cluster quality stats (just once)
