@@ -1,10 +1,12 @@
+clear
+
 SNR = []; 
 SNR1 = [];
 ksRoot = pwd;                                                               % Set dir to analyze
 
-loadPars.loadPCs = false;
-loadPars.excludeNoise = true;
-sp = loadKSdir(ksRoot, loadPars);                                           % see loadKSdir for varargin
+% loadPars.loadPCs = false;
+% loadPars.excludeNoise = true;
+sp = loadKSdir(ksRoot);                                                     % see loadKSdir for varargin
 
 inclCID = sp.cids(sp.cgs == 2);
 st = sp.st;
@@ -23,7 +25,7 @@ params.filename = sp.dat_path;
 d = dir(fullfile(ksRoot, params.filename)); 
 
 
-nSamp = d.bytes/2/sp.n_channels_dat;
+nSamp = d.bytes / 2 / sp.n_channels_dat;
 params.dataSize = [sp.n_channels_dat nSamp];
 params.chanMap = readNPY(fullfile(ksRoot, 'channel_map.npy'));
 params.Fs = sp.sample_rate;
