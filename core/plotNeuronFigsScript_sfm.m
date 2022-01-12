@@ -4,8 +4,8 @@ SNR = [];
 SNR1 = [];
 ksRoot = pwd;                                                               % Set dir to analyze
 
-% loadPars.loadPCs = false;
-% loadPars.excludeNoise = true;
+loadPars.loadPCs = false;
+loadPars.excludeNoise = true;
 sp = loadKSdir(ksRoot);                                                     % see loadKSdir for varargin
 
 inclCID = sp.cids(sp.cgs == 2);
